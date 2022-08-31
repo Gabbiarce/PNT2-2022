@@ -1,22 +1,39 @@
 const obj = Vue.createApp({
     data() {
         return {
-            objetosVoladores: [{codigo: 1, nombre: 'Drone'},
+            objetosVoladores: [{codigo: 1, nombre: 'Superman'},
                                {codigo: 2, nombre: 'Elicoptero'},
-                               {codigo: 3, nombre: 'Superman'}],
+                               {codigo: 3, nombre: 'Drone'}],
             volador: {codigo: 0, nombre:''},
-            mensajeError: ''
+            mensajeError: '',
+            filtro: 0
         }
     },
     methods: {
         agregarVolador(){
-            if(this.volador.codigo <= 0){
-                this.mensajeError = "El codigo tiene que ser mayor a 0"
-            }else{
-                let copia = {codigo: this.volador.codigo,
-                             nombre: this.volador.nombre}
-                this.objetosVoladores.push(copia)
+            let copia ={codigo: this.conseguirMayor()+1,
+                        nombre: this.volador.nombre
             }
+            this.objetosVoladores.push(copia)
+            this.volador.nombre = ''
+        },
+
+        ordenarPorNombre(){
+            this.objetosVoladores.sort( (a,b) => a.nombre.localeCompare(b.nombre))
+        },
+        filtroPorCodigo(){
+            this.objetosVoladores = this.objetosVoladores.filter(volador => volador.codigo ==
+            this.filtro);
+        },
+        conseguirMayor(){
+            let mayor = 0;
+            this.objetosVoladores.forEach(vol => {
+                if (vol.codigo > mayor) {
+                    mayor = vol.codigo;
+                }
+            });
+            return mayor;
+
         }
     }
 }).mount('#app')
